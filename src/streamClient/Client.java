@@ -158,25 +158,26 @@ public class Client{
       if (state == INIT) 
 	{
 	  //Init non-blocking RTPsocket that will be used to receive data
-	//  try{
+	  try{
 	    //construct a new DatagramSocket to receive RTP packets from the server, on port RTP_RCV_PORT
-	    //RTPsocket = ...
+	    RTPsocket = new DatagramSocket(RTP_RCV_PORT);
 
+            RTPsocket.setSoTimeout(5);
 	    //set TimeOut value of the socket to 5msec.
 	    //....
 
-	//  }
-	  //catch (SocketException se)
-	    //{
-	    //  System.out.println("Socket exception: "+se);
-	    //  System.exit(0);
-	  // }
+	  }
+	 catch (SocketException se)
+	    {
+	      System.out.println("Socket exception: "+se);
+	      System.exit(0);
+	   }
 
 	  //init RTSP sequence number
 	  RTSPSeqNb = 1;
 	 
 	  //Send SETUP message to the server
-	  send_RTSP_request("SETUP");
+	  send_RTSP_request("SETUP" + "rtsp://0.0.0.0/VideoStreaming_files/movie " + "RTSP/1.0");
 
 	  //Wait for the response 
 	  if (parse_server_response() != 200)
